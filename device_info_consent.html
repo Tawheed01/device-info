@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Device Info</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#f4f6f8;margin:0;padding:24px}
+.card{max-width:620px;margin:40px auto;background:white;padding:24px;border-radius:18px;box-shadow:0 8px 30px #0001}
+button{padding:12px 18px;border:0;border-radius:10px;background:#111;color:white;font-size:16px}
+#info{margin-top:20px;display:none}.row{padding:10px 0;border-bottom:1px solid #eee}.label{font-weight:700}
+small{color:#666}
+</style>
+</head>
+<body>
+<main class="card">
+<h1>Device Info</h1>
+<p>সম্মতি দেওয়ার পর এই পেজে আপনার ব্রাউজার ও ডিভাইসের সাধারণ তথ্য দেখানো হবে। কোনো তথ্য কোনো সার্ভারে পাঠানো হবে না।</p>
+<button id="agree">আমি সম্মতি দিচ্ছি</button>
+<section id="info"></section>
+</main>
+<script>
+const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+document.getElementById('agree').onclick=()=>{
+ const n=navigator;
+ const data=[
+ ['Platform',n.platform||'অজানা'],
+ ['Browser',n.userAgent||'অজানা'],
+ ['Language',n.language||'অজানা'],
+ ['Screen',screen.width+' × '+screen.height],
+ ['Time zone',Intl.DateTimeFormat().resolvedOptions().timeZone||'অজানা'],
+ ['Device type',/Mobi|Android|iPhone|iPad/i.test(n.userAgent)?'Mobile/Tablet':'Desktop'],
+ ['Online',n.onLine?'হ্যাঁ':'না']
+ ];
+ document.getElementById('info').innerHTML='<h2>তথ্য</h2>'+
+ data.map(([k,v])=>`<div class="row"><span class="label">${esc(k)}:</span> ${esc(v)}</div>`).join('')+
+ '<p><small>এই ডেমো কোনো server/database-এ তথ্য পাঠায় না।</small></p>';
+ document.getElementById('info').style.display='block';
+ document.getElementById('agree').disabled=true;
+ document.getElementById('agree').textContent='সম্মতি দেওয়া হয়েছে';
+};
+</script>
+</body>
+</html>
